@@ -36,3 +36,11 @@ fn ses_arch(name: &str, names: &HashMap<String, bool>) -> (usize, BTreeSet<usize
     }
     (i, players)
 }
+
+pub fn version() -> String {
+    format!(
+        "svarog_service git commit id: {}, branch: {}",
+        env!("VERGEN_GIT_SHA"),
+        env!("VERGEN_GIT_BRANCH")
+    )
+}

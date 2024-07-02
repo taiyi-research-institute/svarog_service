@@ -14,6 +14,8 @@ const sesman_url: &str = "http://127.0.0.1:2000";
 /// 集成测试普通的keygen, sign
 #[tokio::main]
 async fn main() -> Resultat<()> {
+    println!("{}", svarog_peer::version());
+    println!("{}", svarog_algo::version());
     test_btc().await.catch_()?;
     test_solana().await.catch_()?;
     Ok(())

@@ -36,3 +36,7 @@ uuid = { workspace = true }
 svarog_algo = { workspace = true }
 svarog_grpc = { workspace = true }
 svarog_sesman = { workspace = true }
+
+[build-dependencies]
+erreur = "0.1"
+vergen = { version = "8", features = ["build", "cargo", "git", "gitcl", "rustc", "si"]  }

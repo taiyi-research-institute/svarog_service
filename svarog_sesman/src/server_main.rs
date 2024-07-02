@@ -33,6 +33,7 @@ async fn main() -> Resultat<()> {
     let host: String = matches.get_one::<String>("host").ifnone_()?.to_owned();
     let port: u16 = matches.get_one::<u16>("port").ifnone_()?.to_owned();
     let https: bool = matches.get_flag("https");
+    println!("{}", svarog_sesman::version());
     println!("svarog_sesman will listen on {}:{}", &host, port);
 
     // Init service
