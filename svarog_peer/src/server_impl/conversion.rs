@@ -11,13 +11,15 @@ pub(crate) trait SignatureConversion {
 impl SignatureConversion for SignatureElgamal {
     fn to_proto(&self) -> Resultat<Signature> {
         let mut ret = Signature::default();
-        ret.r = SignatureElgamal::eval_rx(&self.R).to_bytes().to_vec();
+        let (r, v) = self.eval_rv();
+        ret.r = r.to_vec();
         ret.s = self.s.to_bytes().to_vec();
-        ret.v = self.v as u32;
+        ret.v = v as u32;
         ret.algo = Some(Algorithm {
             curve: Curve::Secp256k1.into(),
             scheme: Scheme::ElGamal.into(),
         });
+        ret.pk = self.pk.to33bytes().to_vec();
         Ok(ret)
     }
 }
@@ -32,6 +34,7 @@ impl SignatureConversion for SignatureSchnorr {
             curve: Curve::Ed25519.into(),
             scheme: Scheme::Schnorr.into(),
         });
+        ret.pk = self.pk.compress().to_bytes().to_vec();
         Ok(ret)
     }
 }
@@ -48,6 +51,7 @@ impl SignatureConversion for SignatureTaproot {
             curve: Curve::Ed25519.into(),
             scheme: Scheme::Schnorr.into(),
         });
+        ret.pk = self.pk.to33bytes().to_vec();
         Ok(ret)
     }
 }

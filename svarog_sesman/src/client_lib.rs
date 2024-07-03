@@ -19,6 +19,13 @@ use tonic::{
 
 pub const SESSION_EXPIRE_MS: u128 = 300_000;
 
+pub fn version() -> String {
+    format!(
+        "svarog_sesman version:\tsvarog_service git commit id: {}",
+        env!("VERGEN_GIT_SHA"),
+    )
+}
+
 #[derive(Clone)]
 pub struct SvarogChannel {
     sid: String,

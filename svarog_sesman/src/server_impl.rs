@@ -167,7 +167,7 @@ impl MpcSessionManager for Sesman {
 
     async fn ping(&self, _: Request<Void>) -> Result<Response<EchoMessage>, Status> {
         Ok(Response::new(EchoMessage {
-            value: "Svarog Session Manager (with Nested Shamir) is running.".to_owned(),
+            value: svarog_sesman::version(),
         }))
     }
 }

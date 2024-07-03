@@ -39,3 +39,7 @@ uuid = { workspace = true }
 svarog_algo = { workspace = true }
 svarog_grpc = { workspace = true }
 svarog_sesman = { workspace = true }
+
+[build-dependencies]
+erreur = { workspace = true }
+vergen = { workspace = true }

@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
-members = ["svarog_grpc", "svarog_peer", "svarog_sesman"]
+members = ["svarog_grpc", "svarog_peer", "svarog_ping", "svarog_sesman"]
 
 [workspace.dependencies]
 bs58 = "*"
@@ -22,9 +22,10 @@ tokio = { version = "1", features = ["full"] }
 tonic = { version = "0.11", features = ["channel", "tls", "tls-roots", "tls-webpki-roots", "gzip"] }
 tonic-build = { version = "0.11", features = ["prost"] }
 uuid = { version = "1", features = ["v7", "fast-rng"] }
+vergen = { version = "8", features = ["build", "cargo", "git", "gitcl", "rustc", "si"] }
 
 mpc_sig_abs = { rev = "68081c6", git = "https://github.com/taiyi-research-institute/mpc_sig_abs.git" }
-svarog_algo = { rev = "2a09378", git = "https://github.com/taiyi-research-institute/svarog_algo.git" }
+svarog_algo = { branch = "matryoshka", git = "https://github.com/taiyi-research-institute/svarog_algo.git" }
 svarog_grpc = { path = "svarog_grpc" }
 svarog_sesman = { path = "svarog_sesman" }
 

@@ -1,0 +1,14 @@
+[package]
+name = "svarog_ping"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+clap = { workspace = true }
+erreur = { workspace = true }
+tokio = { workspace = true }
+tonic = { workspace = true }
+
+svarog_algo = { workspace = true }
+svarog_grpc = { workspace = true }
+svarog_sesman = { workspace = true }

@@ -30,7 +30,7 @@ async fn main() -> Resultat<()> {
     let host: String = matches.get_one::<String>("host").ifnone_()?.to_owned();
     let port: u16 = matches.get_one::<u16>("port").ifnone_()?.to_owned();
 
-    println!("ver: 2024.06.26 08:40");
+    println!("{}", crate::version());
     println!("svarog_peer will listen on {}:{}", &host, port);
 
     Server::builder()
@@ -40,4 +40,11 @@ async fn main() -> Resultat<()> {
         .catch("GrpcServerIsDown", "MpcPeer")?;
 
     Ok(())
+}
+
+pub fn version() -> String {
+    format!(
+        "svarog_peer version: svarog_service git commit id: {}\n               with: ",
+        env!("VERGEN_GIT_SHA"),
+    ) + &svarog_algo::version()
 }

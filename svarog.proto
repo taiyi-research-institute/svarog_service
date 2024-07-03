@@ -91,6 +91,7 @@ message Signature {
     bytes s = 2;
     uint32 v = 3;
     Algorithm algo = 4;
+    bytes pk = 5;
 }
 
 message ParamsReshare {

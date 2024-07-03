@@ -370,7 +370,7 @@ impl MpcPeer for SvarogPeer {
 
     async fn ping(&self, _: Request<Void>) -> Result<Response<EchoMessage>, Status> {
         Ok(Response::new(EchoMessage {
-            value: "Svarog Peer (with Nested Shamir) is running.".to_owned(),
+            value: crate::version(),
         }))
     }
 }

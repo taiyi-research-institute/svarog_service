@@ -130,6 +130,8 @@ pub struct Signature {
     pub v: u32,
     #[prost(message, optional, tag = "4")]
     pub algo: ::core::option::Option<Algorithm>,
+    #[prost(bytes = "vec", tag = "5")]
+    pub pk: ::prost::alloc::vec::Vec<u8>,
 }
 #[derive(serde::Serialize, serde::Deserialize)]
 #[allow(clippy::derive_partial_eq_without_eq)]

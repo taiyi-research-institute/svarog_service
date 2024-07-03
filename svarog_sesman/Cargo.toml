@@ -28,3 +28,7 @@ uuid = { workspace = true }
 
 [dev-dependencies]
 rand = { workspace = true }
+
+[build-dependencies]
+erreur = { workspace = true }
+vergen = { workspace = true }

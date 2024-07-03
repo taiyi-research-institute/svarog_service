@@ -20,6 +20,7 @@ build: kill_tmux
 	cp target/release/test_keygen_sign out/test_keygen_sign
 	cp target/release/test_mkeygen out/test_mkeygen
 	cp target/release/test_reshare out/test_reshare
+	cp target/release/svarog_ping out/svarog_ping
 
 clean:
 	cargo clean
@@ -59,3 +60,14 @@ test_reshare: build
 	@tmux send-keys -t svarog:peer "cd $(shell pwd)/out && ./svarog_peer" C-m
 	@sleep 1
 	@tmux send-keys -t svarog:test "cd $(shell pwd)/out && ./test_reshare" C-m
+
+test_ping: build
+	@tmux new-session -s svarog \
+		-n man -d ";" new-window \
+		-n peer -d ";" new-window \
+		-n test -d ";"
+	@sleep 1
+	@tmux send-keys -t svarog:man  "cd $(shell pwd)/out && ./svarog_sesman" C-m
+	@tmux send-keys -t svarog:peer "cd $(shell pwd)/out && ./svarog_peer" C-m
+	@sleep 1
+	@tmux send-keys -t svarog:test "cd $(shell pwd)/out && ./svarog_ping --man http://127.0.0.1:2000 --peer http://127.0.0.1:2001" C-m
