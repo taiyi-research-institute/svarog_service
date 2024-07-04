@@ -250,18 +250,18 @@ pub(crate) async fn sign_gg18(
     signers: BTreeMap<usize, BTreeSet<usize>>,
     tasks: Vec<SignTask>,
 ) -> Resultat<Vec<Signature>> {
-    use svarog_algo::elgamal_secp256k1::{sign_batch, KeystryoshkaElgamal};
+    use svarog_algo::elgamal_secp256k1::{sign_batch, KeystoreElgamal};
 
     assert_throw!(tasks.len() >= 1);
     assert_throw!(signers.len() >= 1);
     for (_, dept_signers) in signers.iter() {
         assert_throw!(dept_signers.len() >= 1);
     }
-    let keystore: KeystryoshkaElgamal = {
+    let keystore: KeystoreElgamal = {
         use tokio::fs::read;
         let path = format!("assets/{}@{}.keystore", &player_name, &key_id);
         let keystore = read(path).await.catch_()?;
-        let mut keystore: KeystryoshkaElgamal =
+        let mut keystore: KeystoreElgamal =
             serde_pickle::from_slice(&keystore, Default::default()).catch_()?;
         keystore.paillier_key.precompute_cache().catch_()?;
         keystore
@@ -294,14 +294,14 @@ pub(crate) async fn sign_frost(
     signers: BTreeMap<usize, BTreeSet<usize>>,
     tasks: Vec<SignTask>,
 ) -> Resultat<Vec<Signature>> {
-    use svarog_algo::schnorr_ed25519::{sign_batch, KeystryoshkaSchnorr};
+    use svarog_algo::schnorr_ed25519::{sign_batch, KeystoreSchnorr};
 
     assert_throw!(tasks.len() >= 1);
     assert_throw!(signers.len() >= 1);
     for (_, dept_signers) in signers.iter() {
         assert_throw!(dept_signers.len() >= 1);
     }
-    let keystore: KeystryoshkaSchnorr = {
+    let keystore: KeystoreSchnorr = {
         use tokio::fs::read;
         let path = format!("assets/{}@{}.keystore", &player_name, &key_id);
         let keystore = read(path).await.catch_()?;
@@ -336,14 +336,14 @@ pub(crate) async fn sign_taproot(
     signers: BTreeMap<usize, BTreeSet<usize>>,
     tasks: Vec<SignTask>,
 ) -> Resultat<Vec<Signature>> {
-    use svarog_algo::schnorr_secp256k1::{sign_batch, KeystryoshkaSchnorr};
+    use svarog_algo::schnorr_secp256k1::{sign_batch, KeystoreSchnorr};
 
     assert_throw!(tasks.len() >= 1);
     assert_throw!(signers.len() >= 1);
     for (_, dept_signers) in signers.iter() {
         assert_throw!(dept_signers.len() >= 1);
     }
-    let keystore: KeystryoshkaSchnorr = {
+    let keystore: KeystoreSchnorr = {
         use tokio::fs::read;
         let path = format!("assets/{}@{}.keystore", &player_name, &key_id);
         let keystore = read(path).await.catch_()?;
@@ -386,7 +386,7 @@ pub(crate) async fn reshare_gg18(
     providers: BTreeMap<usize, BTreeSet<usize>>,
     consumers: BTreeMap<usize, BTreeSet<usize>>,
 ) -> Resultat<KeyTag> {
-    use svarog_algo::elgamal_secp256k1::{reshare_consumer, reshare_provider, KeystryoshkaElgamal};
+    use svarog_algo::elgamal_secp256k1::{reshare_consumer, reshare_provider, KeystoreElgamal};
 
     assert_throw!(providers.len() >= 1);
     for (_, dept_providers) in providers.iter() {
@@ -396,7 +396,7 @@ pub(crate) async fn reshare_gg18(
     for (_, dept_consumers) in consumers.iter() {
         assert_throw!(dept_consumers.len() >= 1);
     }
-    let keystore: Option<KeystryoshkaElgamal> = if false == key_id.is_empty() {
+    let keystore: Option<KeystoreElgamal> = if false == key_id.is_empty() {
         use tokio::fs::read;
 
         let path = format!("assets/{}@{}.keystore", &player_name, &key_id);
@@ -468,7 +468,7 @@ pub(crate) async fn reshare_frost(
     providers: BTreeMap<usize, BTreeSet<usize>>,
     consumers: BTreeMap<usize, BTreeSet<usize>>,
 ) -> Resultat<KeyTag> {
-    use svarog_algo::schnorr_ed25519::{reshare_consumer, reshare_provider, KeystryoshkaSchnorr};
+    use svarog_algo::schnorr_ed25519::{reshare_consumer, reshare_provider, KeystoreSchnorr};
 
     assert_throw!(providers.len() >= 1);
     for (_, dept_providers) in providers.iter() {
@@ -478,7 +478,7 @@ pub(crate) async fn reshare_frost(
     for (_, dept_consumers) in consumers.iter() {
         assert_throw!(dept_consumers.len() >= 1);
     }
-    let keystore: Option<KeystryoshkaSchnorr> = if false == key_id.is_empty() {
+    let keystore: Option<KeystoreSchnorr> = if false == key_id.is_empty() {
         use tokio::fs::read;
 
         let path = format!("assets/{}@{}.keystore", &player_name, &key_id);
@@ -551,7 +551,7 @@ pub(crate) async fn reshare_taproot(
     providers: BTreeMap<usize, BTreeSet<usize>>,
     consumers: BTreeMap<usize, BTreeSet<usize>>,
 ) -> Resultat<KeyTag> {
-    use svarog_algo::schnorr_secp256k1::{reshare_consumer, reshare_provider, KeystryoshkaSchnorr};
+    use svarog_algo::schnorr_secp256k1::{reshare_consumer, reshare_provider, KeystoreSchnorr};
 
     assert_throw!(providers.len() >= 1);
     for (_, dept_providers) in providers.iter() {
@@ -561,7 +561,7 @@ pub(crate) async fn reshare_taproot(
     for (_, dept_consumers) in consumers.iter() {
         assert_throw!(dept_consumers.len() >= 1);
     }
-    let keystore: Option<KeystryoshkaSchnorr> = if false == key_id.is_empty() {
+    let keystore: Option<KeystoreSchnorr> = if false == key_id.is_empty() {
         use tokio::fs::read;
 
         let path = format!("assets/{}@{}.keystore", &player_name, &key_id);

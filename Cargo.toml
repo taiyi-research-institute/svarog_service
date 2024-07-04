@@ -25,7 +25,7 @@ uuid = { version = "1", features = ["v7", "fast-rng"] }
 vergen = { version = "8", features = ["build", "cargo", "git", "gitcl", "rustc", "si"] }
 
 mpc_sig_abs = { rev = "68081c6", git = "https://github.com/taiyi-research-institute/mpc_sig_abs.git" }
-svarog_algo = { branch = "matryoshka", git = "https://github.com/taiyi-research-institute/svarog_algo.git" }
+svarog_algo = { branch = "nested_shamir", git = "https://github.com/taiyi-research-institute/svarog_algo.git" }
 svarog_grpc = { path = "svarog_grpc" }
 svarog_sesman = { path = "svarog_sesman" }
 
