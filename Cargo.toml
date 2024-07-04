@@ -24,7 +24,7 @@ tonic-build = { version = "0.11", features = ["prost"] }
 uuid = { version = "1", features = ["v7", "fast-rng"] }
 
 mpc_sig_abs = { branch = "main", git = "https://github.com/taiyi-research-institute/mpc_sig_abs.git" }
-svarog_algo = { branch = "main", git = "https://github.com/taiyi-research-institute/svarog_algo.git" }
+svarog_algo = { branch = "flat_shamir", git = "https://github.com/taiyi-research-institute/svarog_algo.git" }
 svarog_grpc = { path = "svarog_grpc" }
 svarog_sesman = { path = "svarog_sesman" }
 
