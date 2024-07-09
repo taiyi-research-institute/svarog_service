@@ -1,9 +1,12 @@
 use std::collections::BTreeSet;
 
 use erreur::*;
-use svarog_algo::elgamal_secp256k1::{
-    keygen, keygen_mnem_consumer, keygen_mnem_provider, reshare_consumer, reshare_provider,
-    sign_batch, KeystoreElgamal,
+use svarog_algo::{
+    elgamal_secp256k1::{
+        keygen, keygen_mnem_consumer, keygen_mnem_provider, reshare_consumer, reshare_provider,
+        sign_batch, ImportedPartyKey, KeystoreElgamal,
+    },
+    mnemi2sk,
 };
 use svarog_sesman::SvarogChannel;
 
@@ -52,6 +55,30 @@ pub async fn biz_keygen_mnem(
         "all keygen members should attend"
     );
     let keystore = impl_keygen_mnem(chan, i, t, players, mnemonics)
+        .await
+        .catch_()?;
+    Ok(keystore)
+}
+
+pub async fn biz_keygen_mnemi(
+    sesman_url: String,
+    session_id: String,
+    member_name: String,
+    mnem_i: String,
+) -> Resultat<KeystoreElgamal> {
+    assert_throw!(sesman_url.starts_with("http://") || sesman_url.starts_with("https://"));
+    let https = sesman_url.starts_with("https://");
+
+    let (chan, cfg) = SvarogChannel::use_session(&session_id, &sesman_url, https)
+        .await
+        .catch_()?;
+    let t = cfg.threshold as usize;
+    let (i, players) = ses_arch(&member_name, &cfg.players);
+    assert_throw!(
+        players.len() == cfg.players.len(),
+        "all keygen members should attend"
+    );
+    let keystore = impl_keygen_mnemi(chan, i, t, players, mnem_i)
         .await
         .catch_()?;
     Ok(keystore)
@@ -146,6 +173,23 @@ async fn impl_keygen_mnem(
     }
 
     Ok(ret)
+}
+
+async fn impl_keygen_mnemi(
+    chan: SvarogChannel,
+    i: usize,
+    t: usize,
+    players: BTreeSet<usize>,
+    mnem_i: String,
+) -> Resultat<KeystoreElgamal> {
+    let ui_bytes = mnemi2sk(&mnem_i).catch_()?;
+    let ui = svarog_algo::k256::Scalar::from_bytes_mod_order(&ui_bytes);
+    let pk = None;
+    let imported = ImportedPartyKey { ui, pk };
+    let keystore = keygen(chan, players, t, i, Some(imported), None)
+        .await
+        .catch_()?;
+    Ok(keystore)
 }
 
 async fn impl_sign(
